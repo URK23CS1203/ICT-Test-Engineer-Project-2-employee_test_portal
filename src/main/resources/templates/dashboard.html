@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EmployeeTestPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="main">
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+        <main class="content">
+            <h1 id="dashboardTitle">Dashboard</h1>
+            <p class="muted">Simple employee application used for the 4-stage testing course.</p>
+
+            <div class="cards">
+                <a class="card" th:href="@{/employees}"><h2>Employees</h2><p>Manage employee records</p></a>
+                <a class="card" th:href="@{/leaves}"><h2>Leave</h2><p>Apply and approve leave</p></a>
+                <a class="card" th:href="@{/attendance}"><h2>Attendance</h2><p>Mark daily attendance</p></a>
+            </div>
+        </main>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - EmployeeTestPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>403 - Access Denied</h1>
+    <p>You are authenticated, but your role does not have permission to perform this operation.</p>
+    <p><strong>ADMIN</strong> can manage employees and approve/reject leave.</p>
+    <p><strong>EMPLOYEE</strong> can view records, apply leave and mark attendance.</p>
+    <a class="button" th:href="@{/dashboard}">Back to Dashboard</a>
+</div>
+</body>
+</html>

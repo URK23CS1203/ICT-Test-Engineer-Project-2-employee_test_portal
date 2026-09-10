@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="navbar" class="navbar">
+
+    <div class="brand">
+        EmployeeTestPortal
+    </div>
+
+    <div class="user-area">
+
+        <span class="logged-user">
+            Welcome,
+            <strong th:text="${loggedInUsername}">
+                user
+            </strong>
+        </span>
+
+        <form th:action="@{/logout}" method="post">
+
+            <button class="logout-btn" type="submit">
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<body>-->
+
+<!--<div th:fragment="navbar" class="navbar">-->
+
+<!--    <div class="brand">-->
+<!--        EmployeeTestPortal-->
+<!--    </div>-->
+
+<!--    <div class="user-area">-->
+
+<!--        <span class="logged-user">-->
+<!--            Welcome,-->
+<!--            <strong th:text="${#authentication?.name}">-->
+<!--                user-->
+<!--            </strong>-->
+<!--        </span>-->
+
+<!--        <form th:action="@{/logout}" method="post">-->
+
+<!--            <button class="logout-btn" type="submit">-->
+<!--                Logout-->
+<!--            </button>-->
+
+<!--        </form>-->
+
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--</body>-->
+
+<!--</html>-->
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<body>-->
+
+<!--<div th:fragment="navbar" class="navbar">-->
+
+<!--    <div class="brand">-->
+<!--        EmployeeTestPortal-->
+<!--    </div>-->
+
+<!--    <div class="user-area">-->
+
+<!--        <span th:text="${#authentication?.name}">-->
+<!--            user-->
+<!--        </span>-->
+
+<!--        <form th:action="@{/logout}" method="post">-->
+<!--            <button class="logout-btn" type="submit">-->
+<!--                Logout-->
+<!--            </button>-->
+<!--        </form>-->
+
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+<!--<div th:fragment="navbar" class="navbar" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--    <div class="brand">EmployeeTestPortal</div>-->
+<!--    <div class="user-area">-->
+<!--&lt;!&ndash;        <span th:text="${#authentication.name}">user</span>&ndash;&gt;-->
+<!--        <span th:text="${#authentication?.name}">user</span>-->
+<!--        <form th:action="@{/logout}" method="post">-->
+<!--            <button class="logout-btn" type="submit">Logout</button>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->

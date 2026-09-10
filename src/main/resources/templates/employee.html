@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees - EmployeeTestPortal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="main">
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+        <main class="content">
+            <div class="page-head">
+                <div>
+                    <h1>Employees</h1>
+                    <p class="muted" th:if="${isAdmin}">Manage employee records and employee lifecycle status.</p>
+                    <p class="muted" th:unless="${isAdmin}">View the employee directory.</p>
+                </div>
+                <a class="button" th:if="${isAdmin}" th:href="@{/employees/new}">New Employee</a>
+            </div>
+
+            <p class="success" th:if="${param.success}" th:text="${param.success}"></p>
+            <p class="error" th:if="${param.error}" th:text="${param.error}"></p>
+            <p class="error" th:if="${error}" th:text="${error}"></p>
+
+            <div class="panel">
+                <form th:action="@{/employees}" method="get" class="inline-form">
+                    <input id="search" type="text" name="search" th:value="${search}" placeholder="Search by name">
+                    <select id="status" name="status">
+                        <option value="ALL" th:selected="${status == 'ALL'}">All</option>
+                        <option value="ACTIVE" th:selected="${status == 'ACTIVE'}">Active</option>
+                        <option value="INACTIVE" th:selected="${status == 'INACTIVE'}">Inactive</option>
+                    </select>
+                    <button type="submit">Search</button>
+                    <a class="button secondary" th:href="@{/employees}">Clear</a>
+                </form>
+            </div>
+
+            <div class="panel">
+                <table>
+                    <thead><tr><th>Code</th><th>Name</th><th>Email</th><th>Phone</th><th>Leave Balance</th><th>Status</th><th th:if="${isAdmin}">Action</th></tr></thead>
+                    <tbody>
+                    <tr th:each="employee : ${employees}">
+                        <td th:text="${employee.employeeCode}"></td>
+                        <td th:text="${employee.name}"></td>
+                        <td th:text="${employee.email}"></td>
+                        <td th:text="${employee.phone}"></td>
+                        <td th:text="${employee.leaveBalance}"></td>
+                        <td th:text="${employee.active ? 'ACTIVE' : 'INACTIVE'}"></td>
+                        <td th:if="${isAdmin}" class="actions">
+                            <form th:if="${employee.active}" th:action="@{/employees/{id}/deactivate(id=${employee.id})}" method="post">
+                                <input type="hidden" name="reason" value="Employee deactivated by administrator">
+                                <button class="danger" type="submit">Deactivate</button>
+                            </form>
+                            <form th:unless="${employee.active}" th:action="@{/employees/{id}/activate(id=${employee.id})}" method="post">
+                                <input type="hidden" name="reason" value="Employee reactivated by administrator">
+                                <button class="success-btn" type="submit">Activate</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(employees)}"><td th:colspan="${isAdmin ? 7 : 6}">No employees found.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="panel form-panel" th:if="${isAdmin and employee != null}">
+                <h2>Add Employee</h2>
+                <form id="employeeForm" th:action="@{/employees}" th:object="${employee}" method="post">
+                    <div class="grid-2">
+                        <div><label>Employee Code</label><input id="employeeCode" th:field="*{employeeCode}"><small class="error" th:errors="*{employeeCode}"></small></div>
+                        <div><label>Name</label><input id="employeeName" th:field="*{name}"><small class="error" th:errors="*{name}"></small></div>
+                        <div><label>Email</label><input id="employeeEmail" th:field="*{email}"><small class="error" th:errors="*{email}"></small></div>
+                        <div><label>Phone</label><input id="employeePhone" th:field="*{phone}"></div>
+                    </div>
+                    <button id="saveEmployee" class="button" type="submit">Save Employee</button>
+                </form>
+            </div>
+        </main>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+<script src="/js/employee.js"></script>
+</body>
+</html>

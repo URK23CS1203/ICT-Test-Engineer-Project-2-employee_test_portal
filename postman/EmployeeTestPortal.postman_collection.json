@@ -1,0 +1,245 @@
+{
+  "info": {
+    "name": "EmployeeTestPortal API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "Get Employees",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/employees"
+          }
+        },
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeCode\": \"EMP100\",\n  \"name\": \"Test User\",\n  \"email\": \"test@company.com\",\n  \"phone\": \"9876543212\",\n  \"leaveBalance\": 12\n}"
+            },
+            "url": "http://localhost:8080/api/employees"
+          }
+        },
+        {
+          "name": "ADMIN - Deactivate Employee",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{adminUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/employees/1/deactivate?reason=Deactivated%20for%20testing"
+          }
+        },
+        {
+          "name": "ADMIN - Activate Employee",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{adminUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/employees/1/activate?reason=Reactivated%20for%20testing"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leave",
+      "item": [
+        {
+          "name": "Get Leaves",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/leaves"
+          }
+        },
+        {
+          "name": "Apply Leave",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee\": {\"id\": 1},\n  \"leaveType\": \"CASUAL\",\n  \"startDate\": \"2026-09-10\",\n  \"endDate\": \"2026-09-11\",\n  \"reason\": \"Personal work\",\n  \"status\": \"PENDING\"\n}"
+            },
+            "url": "http://localhost:8080/api/leaves"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Get Attendance",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/attendance"
+          }
+        },
+        {
+          "name": "Mark Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employee\": {\"id\": 1},\n  \"attendanceDate\": \"2026-09-15\",\n  \"status\": \"PRESENT\"\n}"
+            },
+            "url": "http://localhost:8080/api/attendance"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authorization Tests",
+      "item": [
+        {
+          "name": "ADMIN - Create Employee",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{adminUsername}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeCode\": \"EMP-AUTH-01\",\n  \"name\": \"Authorization Admin Test\",\n  \"email\": \"authadmin@company.com\",\n  \"phone\": \"9000000001\",\n  \"leaveBalance\": 12\n}"
+            },
+            "url": "{{baseUrl}}/api/employees"
+          }
+        },
+        {
+          "name": "EMPLOYEE - Create Employee (Expected 403)",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{employeeUsername}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{employeePassword}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employeeCode\": \"EMP-AUTH-02\",\n  \"name\": \"Authorization Employee Test\",\n  \"email\": \"authemployee@company.com\",\n  \"phone\": \"9000000002\",\n  \"leaveBalance\": 12\n}"
+            },
+            "url": "{{baseUrl}}/api/employees"
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "admin",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "Admin@123",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "adminUsername",
+      "value": "admin"
+    },
+    {
+      "key": "adminPassword",
+      "value": "Admin@123"
+    },
+    {
+      "key": "employeeUsername",
+      "value": "employee1"
+    },
+    {
+      "key": "employeePassword",
+      "value": "Employee@123"
+    }
+  ]
+}

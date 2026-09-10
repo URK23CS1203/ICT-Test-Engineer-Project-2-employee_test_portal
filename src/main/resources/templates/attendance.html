@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - EmployeeTestPortal</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="main">
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+        <main class="content">
+            <h1>Attendance</h1><p class="muted">Employees mark their own attendance; administrators can mark attendance for active employees.</p>
+            <p class="success" th:if="${param.success}" th:text="${param.success}"></p>
+            <p class="error" th:if="${error}" th:text="${error}"></p>
+
+            <div class="panel form-panel">
+                <h2>Mark Attendance</h2>
+                <form id="attendanceForm" th:action="@{/attendance}" th:object="${attendance}" method="post">
+                    <!-- Validation Errors -->
+                    <div th:if="${#fields.hasErrors('*')}" class="error">
+                        <p th:each="err : ${#fields.errors('*')}"
+                           th:text="${err}">
+                        </p>
+                    </div>
+                    <div class="grid-3">
+<!--                        <div th:if="${isAdmin}">-->
+<!--                            <label>Employee</label>-->
+<!--                            <select id="attendanceEmployee" th:field="*{employee.id}">-->
+<!--                                <option value="">Select employee</option>-->
+<!--                                    <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.name}"></option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <div th:if="${isAdmin}">
+                            <label>Employee</label>
+
+                            <select id="adminAttendanceEmployee"
+                                    th:field="*{employee.id}">
+                                <option value="">Select employee</option>
+
+                                <option th:each="employee : ${employees}"
+                                        th:value="${employee.id}"
+                                        th:text="${employee.name}">
+                                </option>
+                            </select>
+                        </div>
+<!--                        <div th:unless="${isAdmin}">-->
+<!--                            <label>Employee</label>-->
+<!--                            <input type="text" value="Your employee profile" disabled>-->
+<!--                            <input id="attendanceEmployee" type="hidden" name="employee.id" th:value="${currentEmployeeId}">-->
+<!--                        </div>-->
+
+                        <div th:unless="${isAdmin}">
+                            <label>Employee</label>
+
+                            <input type="text"
+                                   value="Your employee profile"
+                                   disabled>
+
+                            <input id="employeeAttendanceEmployee"
+                                   type="hidden"
+                                   name="employee.id"
+                                   th:value="${currentEmployeeId}">
+                        </div>
+                        <div><label>Date</label><input id="attendanceDate" type="date" th:field="*{attendanceDate}"></div>
+                        <div>
+                            <label>Status</label>
+                            <select id="attendanceStatus" th:field="*{status}">
+                                <option value="PRESENT">PRESENT</option><option value="ABSENT">ABSENT</option><option value="LEAVE">LEAVE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="saveAttendance" class="button" type="submit">Save Attendance</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2 th:text="${isAdmin ? 'All Attendance' : 'My Attendance'}">Attendance</h2>
+                <table>
+                    <thead><tr><th>Employee</th><th>Date</th><th>Status</th></tr></thead>
+                    <tbody>
+                    <tr th:each="a : ${attendanceList}"><td th:text="${a.employee.name}"></td><td th:text="${a.attendanceDate}"></td><td th:text="${a.status}"></td></tr>
+                    <tr th:if="${#lists.isEmpty(attendanceList)}"><td colspan="3">No attendance records found.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+<script src="/js/attendance.js"></script>
+</body>
+</html>

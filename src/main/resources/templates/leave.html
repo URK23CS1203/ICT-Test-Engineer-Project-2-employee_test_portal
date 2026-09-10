@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave - EmployeeTestPortal</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div class="main">
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
+        <main class="content">
+            <h1>Leave</h1><p class="muted">Employees apply for their own leave; administrators review and approve/reject requests.</p>
+            <p class="success" th:if="${param.success}" th:text="${param.success}"></p>
+            <p class="error" th:if="${error}" th:text="${error}"></p>
+
+            <div class="panel form-panel">
+                <h2>Apply Leave</h2>
+                <form id="leaveForm" th:action="@{/leaves}" th:object="${leave}" method="post">
+                    <div class="grid-2">
+                        <div th:if="${isAdmin}">
+                            <label>Employee</label>
+                            <select id="leaveEmployee" th:field="*{employee.id}">
+                                <option value="">Select employee</option>
+                                <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.name}"></option>
+                            </select>
+                        </div>
+                        <div th:unless="${isAdmin}">
+                            <label>Employee</label>
+                            <input type="text" value="Your employee profile" disabled>
+                            <input id="leaveEmployee" type="hidden" name="employee.id" th:value="${currentEmployeeId}">
+                        </div>
+                        <div>
+                            <label>Leave Type</label>
+                            <select id="leaveType" th:field="*{leaveType}">
+                                <option value="">Select type</option><option value="CASUAL">CASUAL</option><option value="SICK">SICK</option>
+                            </select>
+                        </div>
+                        <div><label>Start Date</label><input id="startDate" type="date" th:field="*{startDate}"></div>
+                        <div><label>End Date</label><input id="endDate" type="date" th:field="*{endDate}"></div>
+                    </div>
+                    <div><label>Reason</label><textarea id="leaveReason" th:field="*{reason}"></textarea></div>
+                    <button id="submitLeave" class="button" type="submit">Submit Leave</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2 th:text="${isAdmin ? 'All Leave Requests' : 'My Leave Requests'}">Leave Requests</h2>
+                <table>
+                    <thead><tr><th>Employee</th><th>Type</th><th>Start</th><th>End</th><th>Reason</th><th>Status</th><th>Approved/Rejected By</th><th>Action</th></tr></thead>
+                    <tbody>
+                    <tr th:each="leave : ${leaves}">
+                        <td th:text="${leave.employee.name}"></td><td th:text="${leave.leaveType}"></td>
+                        <td th:text="${leave.startDate}"></td><td th:text="${leave.endDate}"></td>
+                        <td th:text="${leave.reason}"></td><td th:text="${leave.status}"></td>
+                        <td th:text="${leave.approvedBy != null ? leave.approvedBy : leave.rejectedBy}"></td>
+                        <td class="actions" th:if="${isAdmin}">
+                            <form th:if="${leave.status.name() == 'PENDING'}" th:action="@{/leaves/{id}/approve(id=${leave.id})}" method="post"><button class="success-btn leaveAction" type="submit">Approve</button></form>
+                            <form th:if="${leave.status.name() == 'PENDING'}" th:action="@{/leaves/{id}/reject(id=${leave.id})}" method="post"><button class="danger leaveAction" type="submit">Reject</button></form>
+                        </td>
+                        <td th:unless="${isAdmin}">-</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(leaves)}"><td colspan="8">No leave requests found.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+<script src="/js/leave.js"></script>
+</body>
+</html>

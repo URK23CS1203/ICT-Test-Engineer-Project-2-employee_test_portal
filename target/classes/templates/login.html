@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EmployeeTestPortal</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body class="login-body">
+<div class="login-card">
+    <h1>EmployeeTestPortal</h1>
+    <p class="muted">Software Testing Training Application</p>
+
+    <form id="loginForm" th:action="@{/login}" method="post">
+        <label>Username</label>
+        <input id="username" type="text" name="username" required>
+
+        <label>Password</label>
+        <input id="password" type="password" name="password" required>
+
+        <button id="loginButton" type="submit">Login</button>
+    </form>
+    <p id="loginClientError" class="error" style="display:none;"></p>
+
+    <p th:if="${param.error}" class="error">Invalid username or password.</p>
+    <p th:if="${param.logout}" class="success">You have been logged out.</p>
+
+    <div class="demo-box">
+        <strong>Training users</strong><br>
+        admin / Admin@123<br>
+        employee1 / Employee@123
+    </div>
+</div>
+    <script src="/js/login.js"></script>
+</body>
+</html>
